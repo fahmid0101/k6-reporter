@@ -444,5 +444,53 @@
       <!-- ---- end tab ---- -->
     </div>
     <footer>K6 Reporter v<%= version %> - Ben Coleman 2021, <a href="https://github.com/benc-uk/k6-reporter">[GitHub]</a></footer>
+  
+    <h1>K6 Smoke Test Report</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Endpoint</th>
+                <th>Database Size</th>
+                <th>Baseline Avg RT (ms)</th>
+                <th>Last Avg RT (ms)</th>
+                <th>Current Avg RT (ms)</th>
+                <th>% From Baseline</th>
+                <th>Max Time (ms)</th>
+                <th>Deviation (ms)</th>
+                <th>Failures</th>
+                <th>Scaling Factor</th>
+                <th>Warnings</th>
+                <th>Errors</th>
+                <th>Logs</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% data.forEach(endpoint => { %>
+                <tr>
+                    <td colspan="13"><strong><%= endpoint.name %> (<%= endpoint.entries.length %> entries)</strong></td>
+                </tr>
+                <% endpoint.entries.forEach(entry => { %>
+                    <tr>
+                        <td><%= entry.url %></td>
+                        <td><%= entry.databaseSize %></td>
+                        <td><%= entry.baselineAvgRT %></td>
+                        <td><%= entry.lastAvgRT %></td>
+                        <td><%= entry.currentAvgRT %></td>
+                        <td class="<%= entry.percentChange > 30 ? 'highlight' : '' %>">
+                            <%= entry.percentChange %>
+                        </td>
+                        <td><%= entry.maxTime %></td>
+                        <td><%= entry.deviation %></td>
+                        <td><%= entry.failures %></td>
+                        <td><%= entry.scalingFactor %></td>
+                        <td><%= entry.warnings %></td>
+                        <td><%= entry.errors %></td>
+                        <td><a href="<%= entry.logs %>" target="_blank">Download</a></td>
+                    </tr>
+                <% }) %>
+            <% }) %>
+        </tbody>
+    </table>
+  
   </body>
 </html>
